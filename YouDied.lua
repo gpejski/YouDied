@@ -22,6 +22,10 @@ YouDied.subTitle = YouDied:CreateFontString(nil, "OVERLAY", "GameFontNormal")
 YouDied.subTitle:SetPoint("TOP", YouDied.title, "BOTTOM", 0, -20)
 YouDied.subTitle:SetText("Available life-savers:")
 
+YouDied.potionWarning = YouDied:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+YouDied.potionWarning:SetPoint("TOP", YouDied.subTitle, "BOTTOM", 0, -5)
+YouDied.potionWarning:SetTextColor(1, 0.5, 0) -- Orange warning
+YouDied.potionWarning:Hide()
 YouDied.rows = {}
 
 local function GetOrCreateRow(index)
@@ -85,13 +89,7 @@ local classSpells = {
     EVOKER = { 363916, 374348, 374227, 357170, 363534 }
 }
 
-local healingItems = {
-    5512,   -- Healthstone
-    211878, -- Algari Healing Potion (Rank 1)
-    211879, -- Algari Healing Potion (Rank 2)
-    211880, -- Algari Healing Potion (Rank 3)
-    212239, -- Fleeting Algari Healing Potion
-}
+local healingItems = {}
 
 local trackedSpells = {
     -- WARRIOR
@@ -223,19 +221,7 @@ local function AddRow(index, name, icon, spellID, itemID)
     row:Show()
 end
 
-local activeSpells = {}
-local dynamicSpellsResolved = false
-local function ResolveDynamicSpells()
-    if dynamicSpellsResolved then return end
-    dynamicSpellsResolved = true
-    
-    local _, class = UnitClass("player")
-    if classSpells[class] then
-        for _, baseID in ipairs(classSpells[class]) do
-            table.insert(activeSpells, baseID)
-        end
-    end
-end
+
 
 local function ResolveDynamicItems()
     local bestPotionID = nil
@@ -308,12 +294,28 @@ local function ResolveDynamicItems()
 end
 
 local function PopulateFrame()
-    ResolveDynamicSpells()
     ResolveDynamicItems()
     ClearRows()
     local index = 1
     
-    for _, spellID in ipairs(activeSpells) do
+    local hasPotion = false
+    for _, itemID in ipairs(healingItems) do
+        if itemID ~= 5512 then
+            hasPotion = true
+            break
+        end
+    end
+    
+    if not hasPotion then
+        YouDied.potionWarning:SetText("(You have no Healing Potions! Stock up!)")
+        YouDied.potionWarning:Show()
+    else
+        YouDied.potionWarning:Hide()
+    end
+    
+    local _, class = UnitClass("player")
+    local mySpells = classSpells[class] or {}
+    for _, spellID in ipairs(mySpells) do
         if IsSpellAvailable(spellID) then
             local name, icon = GetSpellDetails(spellID)
             if name then
@@ -337,6 +339,15 @@ local function PopulateFrame()
         -- No abilities were available
         AddRow(index, "You used all your tools. You died honorably.", nil, nil, nil)
         index = index + 1
+    end
+    
+    if YouDied.rows[1] then
+        YouDied.rows[1]:ClearAllPoints()
+        if not hasPotion then
+            YouDied.rows[1]:SetPoint("TOP", YouDied.potionWarning, "BOTTOM", 0, -20)
+        else
+            YouDied.rows[1]:SetPoint("TOP", YouDied.subTitle, "BOTTOM", 0, -20)
+        end
     end
     
     -- Adjust banner background to fit dynamically around the content
@@ -479,9 +490,6 @@ EventFrame:SetScript("OnEvent", function(self, event, ...)
             end
             
             if castName and spellNameToIDs[castName] then
-                if not YouDiedDB then YouDiedDB = {} end
-                YouDiedDB.lastCastTimes = YouDiedDB.lastCastTimes or {}
-                
                 for _, id in ipairs(spellNameToIDs[castName]) do
                     YouDiedDB.lastCastTimes[id] = time()
                 end
