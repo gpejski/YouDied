@@ -40,3 +40,7 @@ Death Knight, Demon Hunter, Druid, Evoker, Hunter, Mage, Monk, Paladin, Priest, 
 
 This is new, immediate roadmap will be fixing bugs and incorporating user feedback. Beyond that:
 - **Raid Review**: Review deaths after a raid wipe and see what you (and your team) could have done to survive.
+
+## Can't Do
+
+- **Avoidable Damage**: I wanted to add a feature that would show how much avoidable damage you took when you died, but unfortunately this isn't possible with the current API. 
