@@ -1,0 +1,8 @@
+## Interface: 120100
+## Title: You Died
+## Notes: Shows available defensive cooldowns that could have prevented your death.
+## Author: Garry Pejski
+## Version: 1.0
+## SavedVariables: YouDiedDB
+
+YouDied.lua
