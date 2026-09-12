@@ -1,6 +1,6 @@
 # You Died (World of Warcraft Addon)
 
-**"You Died"** is a Dark Souls-inspired death recap addon for World of Warcraft (Patch 12.1.0). 
+**"You Died"** is a World of Warcraft death recap addon that shows you exactly which life-saving cooldowns you had available when you died.
 
 Instead of showing you a generic combat log of what killed you, this addon pops up a stylistic, semi-transparent banner upon your death to gently (or not so gently) remind you of all the defensive cooldowns, healthstones, and potions you *could* have used to save yourself. 
 
@@ -11,6 +11,7 @@ Instead of showing you a generic combat log of what killed you, this addon pops 
 - **Talent & Override Aware**: Correctly tracks your defensive cooldowns even if they are modified by talents (e.g., hidden spell IDs).
 - **Dynamic Potion Resolution**: Automatically scans your bags to find and track your highest Item Level healing potion.
 - **100% Language Agnostic**: Uses dynamic spell queries and global strings instead of English names, meaning it works flawlessly out-of-the-box on French, German, Spanish, and all other WoW client languages.
+- **Tough Love**: If you die without any healing potions in your bags at all, the addon will make sure to remind you to stock up.
 - **Configurable Environments**: Includes a settings menu (`Esc -> Options -> Addons -> You Died`) to selectively enable or disable the UI in:
   - Dungeons
   - Raids
@@ -37,8 +38,5 @@ Death Knight, Demon Hunter, Druid, Evoker, Hunter, Mage, Monk, Paladin, Priest, 
 
 ## Future Updates (Roadmap)
 
-We are actively maintaining and expanding this addon. Future updates will include:
-- **Expanded Class Support**: Adding tracking for Death Knights, Warriors, Mages, and all other classes.
-- **UI Customization**: Options to scale, move, and change the opacity of the death banner.
-- **Sound Effects**: Optional Dark Souls death sound integration.
-- **Party/Raid Announcements**: An option to print your missed defensives into party chat (for maximum shame).
+This is new, immediate roadmap will be fixing bugs and incorporating user feedback. Beyond that:
+- **Raid Review**: Review deaths after a raid wipe and see what you (and your team) could have done to survive.
