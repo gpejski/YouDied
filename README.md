@@ -21,7 +21,8 @@ Instead of showing you a generic combat log of what killed you, this addon pops 
 
 ## Current Class Support
 
-Currently, the addon fully supports **Paladins** (Divine Shield, Lay on Hands, Blessing of Protection, Ardent Defender, Guardian of Ancient Kings, Divine Protection, Shield of Vengeance), alongside generic items like Healthstones and Potions.
+The addon fully supports **All 13 Classes**, covering over 70 unique defensive cooldowns across:
+Death Knight, Demon Hunter, Druid, Evoker, Hunter, Mage, Monk, Paladin, Priest, Rogue, Shaman, Warlock, and Warrior (alongside generic items like Healthstones and Potions).
 
 ## Installation
 

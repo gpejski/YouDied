@@ -69,15 +69,20 @@ local function ClearRows()
     end
 end
 
-local paladinSpells = {
-    642,   -- Divine Shield
-    633,   -- Lay on Hands
-    1022,  -- Blessing of Protection
-    31850, -- Ardent Defender
-    86659, -- Guardian of Ancient Kings
-    498,   -- Divine Protection
-    403876,-- Divine Protection (Talent variation)
-    184662,-- Shield of Vengeance
+local classSpells = {
+    WARRIOR = { 871, 118038, 184364, 23920, 190456, 97462 },
+    PALADIN = { 642, 633, 1022, 204018, 31850, 86659, 498, 184662, 205191 },
+    HUNTER = { 186265, 264735, 109304, 119574 },
+    ROGUE = { 31224, 5277, 1966, 185311 },
+    PRIEST = { 47585, 19236, 33206, 62618, 47788, 197268 },
+    DEATHKNIGHT = { 48792, 48707, 51052, 55233, 48743, 219809, 194679 },
+    SHAMAN = { 108271, 198103, 108280, 98008, 108281 },
+    MAGE = { 45438, 108978, 55342, 235450, 235313, 11426, 110959 },
+    WARLOCK = { 104773, 108416, 6789 },
+    MONK = { 115203, 122470, 122278, 122783, 115176, 116849 },
+    DRUID = { 61336, 22812, 102342, 108238, 22842, 740 },
+    DEMONHUNTER = { 198589, 212800, 204021, 203720, 196718 },
+    EVOKER = { 363916, 374348, 374227, 357170, 363534 }
 }
 
 local healingItems = {
@@ -89,14 +94,32 @@ local healingItems = {
 }
 
 local trackedSpells = {
-    [642] = 210,   -- Divine Shield
-    [633] = 420,   -- Lay on Hands
-    [1022] = 300,  -- Blessing of Protection
-    [31850] = 120, -- Ardent Defender
-    [86659] = 300, -- Guardian of Ancient Kings
-    [498] = 60,    -- Divine Protection
-    [403876] = 42, -- Divine Protection (Talented cooldown is usually 42s)
-    [184662] = 90, -- Shield of Vengeance
+    -- WARRIOR
+    [871] = 300, [118038] = 180, [184364] = 120, [23920] = 25, [190456] = 12, [97462] = 180,
+    -- PALADIN
+    [642] = 210, [633] = 420, [1022] = 300, [204018] = 180, [31850] = 120, [86659] = 300, [498] = 60, [184662] = 90, [205191] = 60,
+    -- HUNTER
+    [186265] = 180, [264735] = 180, [109304] = 120, [119574] = 120,
+    -- ROGUE
+    [31224] = 120, [5277] = 120, [1966] = 15, [185311] = 30,
+    -- PRIEST
+    [47585] = 120, [19236] = 90, [33206] = 180, [62618] = 180, [47788] = 180, [197268] = 60,
+    -- DEATH KNIGHT
+    [48792] = 180, [48707] = 60, [51052] = 120, [55233] = 90, [48743] = 120, [219809] = 60, [194679] = 25,
+    -- SHAMAN
+    [108271] = 90, [198103] = 300, [108280] = 180, [98008] = 180, [108281] = 120,
+    -- MAGE
+    [45438] = 240, [108978] = 60, [55342] = 120, [235450] = 60, [235313] = 60, [11426] = 60, [110959] = 120,
+    -- WARLOCK
+    [104773] = 180, [108416] = 60, [6789] = 45,
+    -- MONK
+    [115203] = 180, [122470] = 90, [122278] = 120, [122783] = 90, [115176] = 300, [116849] = 120,
+    -- DRUID
+    [61336] = 180, [22812] = 60, [102342] = 90, [108238] = 90, [22842] = 36, [740] = 180,
+    -- DEMON HUNTER
+    [198589] = 60, [212800] = 180, [204021] = 60, [203720] = 20, [196718] = 180,
+    -- EVOKER
+    [363916] = 90, [374348] = 90, [374227] = 120, [357170] = 60, [363534] = 180,
 }
 
 local function CheckCooldown(spellID)
@@ -200,36 +223,16 @@ local function AddRow(index, name, icon, spellID, itemID)
     row:Show()
 end
 
+local activeSpells = {}
 local dynamicSpellsResolved = false
 local function ResolveDynamicSpells()
     if dynamicSpellsResolved then return end
     dynamicSpellsResolved = true
     
-    local baseSpellsToTrack = {498, 184662, 204018, 205191}
-    for _, baseID in ipairs(baseSpellsToTrack) do
-        local localizedName = nil
-        if C_Spell and C_Spell.GetSpellInfo then
-            local info = C_Spell.GetSpellInfo(baseID)
-            if info then localizedName = info.name end
-        elseif GetSpellInfo then
-            localizedName = GetSpellInfo(baseID)
-        end
-        
-        if localizedName then
-            local spellID = nil
-            if C_Spell and C_Spell.GetSpellInfo then
-                local info = C_Spell.GetSpellInfo(localizedName)
-                if info then spellID = info.spellID end
-            elseif GetSpellInfo then
-                local _, _, _, _, _, _, sID = GetSpellInfo(localizedName)
-                spellID = sID
-            end
-            
-            local finalID = spellID or baseID
-            if not trackedSpells[finalID] then
-                table.insert(paladinSpells, finalID)
-                trackedSpells[finalID] = 60 -- Default fallback cooldown
-            end
+    local _, class = UnitClass("player")
+    if classSpells[class] then
+        for _, baseID in ipairs(classSpells[class]) do
+            table.insert(activeSpells, baseID)
         end
     end
 end
@@ -310,15 +313,12 @@ local function PopulateFrame()
     ClearRows()
     local index = 1
     
-    local _, class = UnitClass("player")
-    if class == "PALADIN" then
-        for _, spellID in ipairs(paladinSpells) do
-            if IsSpellAvailable(spellID) then
-                local name, icon = GetSpellDetails(spellID)
-                if name then
-                    AddRow(index, name, icon, spellID, nil)
-                    index = index + 1
-                end
+    for _, spellID in ipairs(activeSpells) do
+        if IsSpellAvailable(spellID) then
+            local name, icon = GetSpellDetails(spellID)
+            if name then
+                AddRow(index, name, icon, spellID, nil)
+                index = index + 1
             end
         end
     end
