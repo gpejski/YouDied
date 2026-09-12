@@ -335,7 +335,7 @@ local function PopulateFrame()
     
     if index == 1 then
         -- No abilities were available
-        AddRow(index, "Nothing could save you.", nil, nil, nil)
+        AddRow(index, "You used all your tools. You died honorably.", nil, nil, nil)
         index = index + 1
     end
     
