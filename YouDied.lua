@@ -392,6 +392,7 @@ local function CreateOptionsPanel()
     if Settings and Settings.RegisterCanvasLayoutCategory then
         local category = Settings.RegisterCanvasLayoutCategory(panel, panel.name)
         Settings.RegisterAddOnCategory(category)
+        YouDiedOptionsCategoryID = category.ID
     else
         InterfaceOptions_AddCategory(panel)
     end
@@ -505,11 +506,22 @@ YouDied:SetScript("OnMouseDown", function(self)
 end)
 
 SLASH_YOUDIED1 = "/youdied"
-SlashCmdList["YOUDIED"] = function()
-    if YouDied:IsShown() then
-        YouDied:Hide()
+SlashCmdList["YOUDIED"] = function(msg)
+    local command = msg and msg:lower() or ""
+    
+    if command == "options" or command == "config" or command == "settings" then
+        if Settings and Settings.OpenToCategory and YouDiedOptionsCategoryID then
+            Settings.OpenToCategory(YouDiedOptionsCategoryID)
+        else
+            InterfaceOptionsFrame_OpenToCategory("You Died")
+            InterfaceOptionsFrame_OpenToCategory("You Died") -- Bypass old UI bug
+        end
     else
-        PopulateFrame()
-        YouDied:Show()
+        if YouDied:IsShown() then
+            YouDied:Hide()
+        else
+            PopulateFrame()
+            YouDied:Show()
+        end
     end
 end
