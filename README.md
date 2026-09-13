@@ -7,7 +7,7 @@ Instead of showing you a generic combat log of what killed you, this addon remin
 ## Features
 
 - **Available Defensives**: Display which defensives you had available when you die. Adjusts to talents you select. Also includes potions and Healthstones. Supports all classes and specs.
-- **Dynamic Potion Finder**: Automatically scans your bags to find and track your highest Item Level healing potion. Should be future proof for when new health potions come out.
+- **Dynamic Health Potions**: Automatically scans your bags to find and track your highest Item Level healing potion. Should be future proof for when new health potions come out.
 - **100% Language Agnostic**: Works for all languages. There are apparently more languages than English.
 - **Healing Potion Reminder**: If you die without any healing potions in your bags at all, the addon will make sure to remind you to stock up.
 - **Configurable Environments**: Includes a settings menu (`Esc -> Options -> Addons -> You Died`) to selectively enable or disable the UI in:
@@ -28,6 +28,7 @@ Instead of showing you a generic combat log of what killed you, this addon remin
 ## Commands
 
 - `/youdied` - Forces the UI to appear anywhere, anytime, so you can test and preview the layout without having to jump off a cliff.
+- `/youdied options` (or `config`, `settings`) - Instantly opens the Interface Options panel to the You Died settings page.
 
 ## Future Updates (Roadmap)
 
