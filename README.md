@@ -7,9 +7,9 @@ Instead of showing you a generic combat log of what killed you, this addon remin
 ## Features
 
 - **Available Defensives**: Display which defensives you had available when you die. Adjusts to talents you select. Also includes potions and Healthstones. Supports all classes and specs.
-- **Dynamic Potion Resolution**: Automatically scans your bags to find and track your highest Item Level healing potion.
+- **Dynamic Potion Finder**: Automatically scans your bags to find and track your highest Item Level healing potion. Should be future proof for when new health potions come out.
 - **100% Language Agnostic**: Works for all languages. There are apparently more languages than English.
-- **Tough Love**: If you die without any healing potions in your bags at all, the addon will make sure to remind you to stock up.
+- **Healing Potion Reminder**: If you die without any healing potions in your bags at all, the addon will make sure to remind you to stock up.
 - **Configurable Environments**: Includes a settings menu (`Esc -> Options -> Addons -> You Died`) to selectively enable or disable the UI in:
   - Dungeons
   - Raids
