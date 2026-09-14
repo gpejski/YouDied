@@ -2,7 +2,7 @@
 
 **"You Died"** is a World of Warcraft death recap addon that shows you exactly which life saving cooldowns you had available when you died.
 
-Instead of showing you a generic combat log of what killed you, this addon reminds you of all the defensive cooldowns, healthstones, and potions you *could* have used to save yourself. 
+Designed to train you to use all your defensives so you can time keys, kill raid bosses or dominate in PVP.
 
 ## Features
 
